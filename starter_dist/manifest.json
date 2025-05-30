@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "Upwork assistant",
+  "version": "1.0.0",
+  "description": "A simple chrome extension to help you get jobs faster on upwork. Works like a personal assistant",
+  "icons": {
+    "48": "images/icon_1.png",
+    "72": "images/icon_2.png",
+    "128": "images/icon_3.png"
+  },
+  "permissions": [
+    "storage",
+    "scripting",
+    "sidePanel",
+    "contextMenus",
+    "sidePanel",
+    "tabs",
+    "notifications",
+    "unlimitedStorage"
+  ],
+
+  "side_panel": {
+    "default_path": "index.html"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["https://www.upwork.com/nx/find-work/best-matches"],
+      "js": ["js/content_pages/parseBestMatch.js"]
+    },
+    {
+      "matches": ["https://www.upwork.com/jobs/*"],
+      "js": ["js/content_pages/interactWithAJob.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "js/background_tasks/process_job_description.js"
+  }
+}

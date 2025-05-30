@@ -1,0 +1,7 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/js/background_tasks/process_job_description.js": "/js/background_tasks/process_job_description.js",
+    "/js/content_pages/interactWithAJob.js": "/js/content_pages/interactWithAJob.js",
+    "/js/content_pages/parseBestMatch.js": "/js/content_pages/parseBestMatch.js",
+    "/css/main.css": "/css/main.css"
+}
