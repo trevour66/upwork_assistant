@@ -1,47 +1,42 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { onMounted, onBeforeMount, ref } from 'vue'
+import full_pageLoader from './components/loader/full_page.loader.vue'
+import login from './components/auth/login.vue'
+import { useUserAuthTracker } from './composables/user_auth_tracker'
+import { useJobsStorageTracker } from './composables/jobs_storage_tracker'
+import Dashboard from './components/dashboard/dashboard.vue'
+import { useUserStateStore } from './stores/user_state'
+
+const user_auth_tracker = useUserAuthTracker()
+const jobs_storage_tracker = useJobsStorageTracker()
+const userStateStore = useUserStateStore()
+
+const force_reauthentication = () => {
+  user_auth_tracker.logout_user()
+}
+
+onMounted(async () => {
+  await user_auth_tracker.resolve_user_session()
+})
+
+onBeforeMount(() => {
+  jobs_storage_tracker.init_tracker()
+})
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
+  <main class="max-h-[100vh] h-[100vh] w-[100vw] flex items-center justify-center px-2">
+    <!-- {{ user_auth_tracker }} -->
+    <template v-if="userStateStore.get_loading_user_login_state">
+      <full_pageLoader message="loading login state" class="w-full" />
+    </template>
+    <template v-else>
+      <template v-if="userStateStore.get_is_user_logged_in">
+        <Dashboard @force_reauthentication="force_reauthentication()" />
+      </template>
+      <template v-else>
+        <login class="w-full" />
+      </template>
+    </template>
   </main>
 </template>
-
-<style scoped>
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-</style>

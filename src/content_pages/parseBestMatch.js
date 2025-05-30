@@ -36,15 +36,6 @@ function checkLoading(mutationsList, observer) {
     processJobList()
     observer.disconnect() // Stop observing once loading is complete
   }
-
-  // else {
-  //   if (retry < 100) {
-  //     retry++
-  //   } else {
-  //     console.log('Max retry limit reached.')
-  //     observer.disconnect() // Stop observing if max retry limit is reached
-  //   }
-  // }
 }
 
 const observer = new MutationObserver(checkLoading)
